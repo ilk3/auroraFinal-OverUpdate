@@ -1,3 +1,5 @@
-# aurora2222
+# Aurora2222
 Pharmaceutical Company Project
-# auroraV2
+
+## Final version of the website
+Hope he doesn't bother again
