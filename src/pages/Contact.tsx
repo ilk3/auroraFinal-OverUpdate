@@ -244,7 +244,7 @@ function Contact() {
             {/* Logo Column */}
             <div>
               <img
-                src="https://raw.githubusercontent.com/ilk3/slike/refs/heads/main/aurora-white.png"
+                src="https://www.dropbox.com/scl/fi/rngw5tjwo0s4g13zp5oa2/aurora-white.png?rlkey=kh5yom49ff57rkyeniqhmi1m8&raw=1"
                 alt="Aurora2222"
                 className="h-30 w-auto mb-6"
               />

@@ -18,6 +18,8 @@ export function ImageGallery({ images }: ImageGalleryProps) {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const lightboxRef = useRef<HTMLDivElement | null>(null);
+  const mainImageRef = useRef<HTMLDivElement | null>(null);
+  const [mainImageWidth, setMainImageWidth] = useState<number | null>(null);
 
   const openLightbox = (index = currentIndex) => {
     setLightboxIndex(index);
@@ -70,76 +72,94 @@ export function ImageGallery({ images }: ImageGalleryProps) {
     return () => window.removeEventListener('keydown', handleKey);
   }, [isLightboxOpen]);
 
+  // Measure main image width and apply to thumbnails
+  useEffect(() => {
+    const updateWidth = () => {
+      if (mainImageRef.current) {
+        setMainImageWidth(mainImageRef.current.offsetWidth);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, [currentIndex]);
+
   return (
     <>
-      {/* Main Gallery */}
-      <div className="relative group">
-        <div
-          className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl cursor-pointer"
-          onClick={() => openLightbox()}
-        >
-          <img
-            src={images[currentIndex].url}
-            alt={images[currentIndex].alt}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-
-          {/* Arrows */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              prevSlide();
-            }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 opacity-0 group-hover:opacity-100 transition"
+      {/* Main Gallery - Shared container for main image and thumbnails */}
+      <div className="w-full flex flex-col items-center">
+        {/* Main image container */}
+        <div className="relative group w-full" ref={mainImageRef}>
+          <div
+            className="relative h-[600px] rounded-3xl overflow-hidden shadow-2xl cursor-pointer w-full"
+            onClick={() => openLightbox()}
           >
-            <ChevronLeft className="text-white w-6 h-6" />
-          </button>
+            <img
+              src={images[currentIndex].url}
+              alt={images[currentIndex].alt}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              nextSlide();
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 opacity-0 group-hover:opacity-100 transition"
-          >
-            <ChevronRight className="text-white w-6 h-6" />
-          </button>
+            {/* Arrows */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevSlide();
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 opacity-0 group-hover:opacity-100 transition"
+            >
+              <ChevronLeft className="text-white w-6 h-6" />
+            </button>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              openLightbox();
-            }}
-            className="absolute top-4 right-4 p-3 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 opacity-0 group-hover:opacity-100 transition"
-          >
-            <Expand className="text-white w-6 h-6" />
-          </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextSlide();
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 opacity-0 group-hover:opacity-100 transition"
+            >
+              <ChevronRight className="text-white w-6 h-6" />
+            </button>
 
-          <div className="absolute bottom-4 right-4 px-4 py-2 bg-black/50 text-white rounded-full text-sm">
-            {currentIndex + 1} / {images.length}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                openLightbox();
+              }}
+              className="absolute top-4 right-4 p-3 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 opacity-0 group-hover:opacity-100 transition"
+            >
+              <Expand className="text-white w-6 h-6" />
+            </button>
+
+            <div className="absolute bottom-4 right-4 px-4 py-2 bg-black/50 text-white rounded-full text-sm">
+              {currentIndex + 1} / {images.length}
+            </div>
+          </div>
+
+          {/* ✅ New description below the image */}
+          <div className="mt-4 text-center text-lg text-white w-full">
+            {images[currentIndex].alt}
           </div>
         </div>
 
-        {/* ✅ New description below the image */}
-        <div className="mt-4 text-center text-lg text-white max-w-3xl mx-auto">
-          {images[currentIndex].alt}
-        </div>
-
-        {/* Thumbnails */}
-        <div className="mt-6 grid grid-cols-6 gap-4">
-          {images.map((image, i) => (
-            <button
-              key={i}
-              className={`rounded-xl overflow-hidden aspect-square transition-all transform ${
-                i === currentIndex ? 'ring-2 ring-primary scale-105' : 'hover:scale-105'
-              }`}
-              onClick={() => setCurrentIndex(i)}
-              onDoubleClick={() => openLightbox(i)}
-            >
-              <img src={image.url} alt={image.alt} className="object-cover w-full h-full" />
-            </button>
-          ))}
+        {/* Thumbnails - Same width as main image, centered */}
+        <div className="mt-6" style={{ width: mainImageWidth ? `${mainImageWidth}px` : '100%' }}>
+          <div className="grid grid-cols-6 gap-4 w-full">
+            {images.map((image, i) => (
+              <button
+                key={i}
+                className={`rounded-xl overflow-hidden aspect-square transition-all transform ${
+                  i === currentIndex ? 'ring-2 ring-primary scale-105' : 'hover:scale-105'
+                }`}
+                onClick={() => setCurrentIndex(i)}
+                onDoubleClick={() => openLightbox(i)}
+              >
+                <img src={image.url} alt={image.alt} className="object-cover w-full h-full" />
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -48,6 +48,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/social-responsibility" element={<SocialResponsibility />} />
           <Route path="/services" element={<Services />} />
           <Route path="/news" element={<News />} />
+          <Route path="/news/hypoparathyroidism-symposium" element={<BlogPost />} />
           <Route path="/news/expert-meeting-neuroblastoma" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/covid" element={<Covid />} />

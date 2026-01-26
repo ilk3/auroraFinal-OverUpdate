@@ -15,7 +15,7 @@ export function ScrollToTop() {
       }, 100);
     } else {
       // If no hash, scroll to top
-      window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
 

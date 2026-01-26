@@ -5,11 +5,11 @@ export const blogPostTranslations = {
       
       // Article Meta
       'meta.category': 'Events',
-      'meta.date': 'March 15, 2024',
+      'meta.date': 'October 19, 2022',
       'meta.experts': 'International and Domestic Experts Gathered',
       
       // Article Title
-      'article.title': 'Expert Meeting on Neuroblastoma Treatment',
+      'article.title': 'Expert Meeting on Neuroblastoma Treatment: Prof dr. Holger Lode, Doc dr Jelena Lazić, Prof dr Maja Beck Popović',
       
       // Main Content
       'content.paragraph1': 'We are extremely proud to have supported and sponsored an expert meeting where the main topic was the treatment of high-risk neuroblastoma. Domestic and international experts were presented with the latest research in this field and previous experiences were shared to improve the future application of therapy for this rare disease.',
@@ -26,6 +26,7 @@ export const blogPostTranslations = {
       'gallery.image3Alt': 'Assist. Dr. Jelena Lazić',
       'gallery.image4Alt': 'Working lunch',
       'gallery.image5Alt': 'Prof. Dr. Maja Beck Popović',
+      'gallery.image6Alt': '',
       'gallery.imageLectureAlt': 'Expert Meeting Lecture',
       
       // Share
@@ -33,10 +34,8 @@ export const blogPostTranslations = {
       
       // Related Articles
       'related.title': 'Related Articles',
-      'related.article1.title': 'New Partnership Expands Access to Orphan Drugs',
-      'related.article1.date': 'March 10, 2024',
-      'related.article2.title': 'Advancing Healthcare Through Innovation',
-      'related.article2.date': 'March 5, 2024',
+      'related.article.title': 'Simposium – "The Many Faces of Hypoparathyroidism – The Importance of Embracing the Challenges!"',
+      'related.article.date': 'October 3, 2025',
       'related.readMore': 'Read More →'
     },
     sr: {
@@ -45,11 +44,11 @@ export const blogPostTranslations = {
       
       // Article Meta
       'meta.category': 'Događaji',
-      'meta.date': '15. mart 2024.',
+      'meta.date': '19. Oktobar 2024.',
       'meta.experts': 'Okupljeni Međunarodni i Domaći Stručnjaci',
       
       // Article Title
-      'article.title': 'Stručni Sastanak o Lečenju Neuroblastoma',
+      'article.title': 'Stručni Sastanak o Lečenju Neuroblastoma: Prof dr. Holger Lode, Doc dr Jelena Lazić, Prof dr Maja Beck Popović',
       
       // Main Content
       'content.paragraph1': 'Izuzetno smo ponosni što smo podržali i sponzorisali stručni sastanak na kojem je glavna tema bila lečenje visokorizičnog neuroblastoma. Domaćim i međunarodnim stručnjacima predstavljena su najnovija istraživanja u ovoj oblasti i podeljena su prethodna iskustva kako bi se poboljšala buduća primena terapije za ovu retku bolest.',
@@ -63,9 +62,10 @@ export const blogPostTranslations = {
       'gallery.title': 'Galerija Događaja',
       'gallery.image1Alt': 'Predavanje',
       'gallery.image2Alt': 'Prof. Dr. Holger Lode',
-      'gallery.image3Alt': 'Assist. Dr. Jelena Lazić',
+      'gallery.image3Alt': 'Doc. Dr. Jelena Lazić',
       'gallery.image4Alt': 'Radni ručak',
       'gallery.image5Alt': 'Prof. Dr. Maja Beck Popovic',
+      'gallery.image6Alt': '',
       'gallery.imageLectureAlt': 'Predavanje',
       
       // Share
@@ -73,10 +73,8 @@ export const blogPostTranslations = {
       
       // Related Articles
       'related.title': 'Povezani Članci',
-      'related.article1.title': 'Novo Partnerstvo Proširuje Pristup Lekovima za Retke Bolesti',
-      'related.article1.date': '10. mart 2024.',
-      'related.article2.title': 'Unapređenje Zdravstvene Zaštite Kroz Inovacije',
-      'related.article2.date': '5. mart 2024.',
+      'related.article.title': 'Simpozijum - „Mnoga lica hipoparatireoidizma – značaj prepoznavanja izazova!"',
+      'related.article.date': '3. Oktobar 2025.',
       'related.readMore': 'Pročitaj Više →'
     }
   };

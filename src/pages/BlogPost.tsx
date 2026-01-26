@@ -1,17 +1,95 @@
-import React from 'react';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { RevealOnScroll } from '../components/RevealOnScroll';
-import { Calendar, Tag, Users, Share2, ArrowLeft } from 'lucide-react';
+import { Calendar, Tag, Users, Share2, ArrowLeft, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ImageGallery } from '../components/ImageGallery';
 import { blogPostTranslations } from '../translations/blogPost';
+import { blogPostHypoparathyroidismTranslations } from '../translations/blogPostHypoparathyroidism';
 import { useLanguage } from '../contexts/LanguageContext';
 
 function BlogPost() {
   const { language } = useLanguage();
-  const t = blogPostTranslations[language as keyof typeof blogPostTranslations];
+  const location = useLocation();
+  const isHypoparathyroidism = location.pathname.includes('hypoparathyroidism');
+  const translations = isHypoparathyroidism 
+    ? blogPostHypoparathyroidismTranslations 
+    : blogPostTranslations;
+  const t = translations[language as keyof typeof translations];
+  const [shareSuccess, setShareSuccess] = useState(false);
 
-  const galleryImages = [
+  const handleShare = async () => {
+    const url = window.location.href;
+    const title = t['article.title'];
+    const text = t['content.paragraph1'].substring(0, 100) + '...';
+
+    // Try Web Share API first (works on mobile and some desktop browsers)
+    if (typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title: title,
+          text: text,
+          url: url,
+        });
+        setShareSuccess(true);
+        setTimeout(() => setShareSuccess(false), 2000);
+      } catch (err) {
+        // User cancelled or error occurred
+        console.log('Share cancelled or failed');
+      }
+    } else {
+      // Fallback: Copy URL to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        setShareSuccess(true);
+        setTimeout(() => setShareSuccess(false), 2000);
+      } catch (err) {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = url;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          setShareSuccess(true);
+          setTimeout(() => setShareSuccess(false), 2000);
+        } catch (err) {
+          console.error('Failed to copy URL');
+        }
+        document.body.removeChild(textArea);
+      }
+    }
+  };
+
+  const galleryImages = isHypoparathyroidism ? [
+    {
+      url: 'https://www.dropbox.com/scl/fi/h193oou88hbxqy91urqj8/1-Venue-Mesto-odr-avaja.jpeg?rlkey=bv0ei06fseo0nwib1thy8bapi&raw=1',
+      alt: t['gallery.image1Alt']
+    },
+    {
+      url: 'https://www.dropbox.com/scl/fi/qzun80et8v9ch1h84di5m/2-Session-Sesija.jpeg?rlkey=ipktd4eeen0j174d1u3kbgwwv&raw=1',
+      alt: t['gallery.image2Alt']
+    },
+    {
+      url: 'https://www.dropbox.com/scl/fi/gm698dm6gk7b3svdzu5in/3-Doc-dr-Marko-Stojanovi.jpeg?rlkey=dldpur87gagma0gxybyok7yo9&raw=1',
+      alt: t['gallery.image3Alt']
+    },
+    {
+      url: 'https://www.dropbox.com/scl/fi/nex1z394062weif52yfhi/4-Doc-dr-Marko-Buta.jpeg?rlkey=e2ndmpia2okt1kcq81m9mmukb&raw=1',
+      alt: t['gallery.image4Alt']
+    },
+    {
+      url: 'https://www.dropbox.com/scl/fi/wropv11w4cv7bddhkj5p0/5-Prof-dr-Maja-or-evi.jpeg?rlkey=aeg05fletvr6bcmonyi16npa7&raw=1',
+      alt: t['gallery.image5Alt']
+    },
+    {
+      url: 'https://www.dropbox.com/scl/fi/r2v1she64mrzu499y6ns3/6-Expert-lecturers-Predava-i.jpeg?rlkey=t9l60c4p5y0pd8qxk6b3s1e89&raw=1',
+      alt: t['gallery.image6Alt']
+    }
+  ] : [
     {
       url: 'https://www.dropbox.com/scl/fi/1vmomq16ftdggqs2wwfc5/image1.png?rlkey=gg2bnor495ttszg3wcid1oidc&raw=1',
       alt: t['gallery.image1Alt']
@@ -31,10 +109,6 @@ function BlogPost() {
     {
       url: 'https://www.dropbox.com/scl/fi/ama43l8x714isyboezk0y/image5.png?rlkey=3d3zdrtnz4140u62zagd39p3u&raw=1',
       alt: t['gallery.image5Alt']
-    },
-    {
-      url: 'https://www.dropbox.com/scl/fi/vkomf6wqrukyu94akm4nz/lecture.jpg?rlkey=m62s69r1sn4bll4o2gp2hf5d7&raw=1',
-      alt: t['gallery.imageLectureAlt']
     }
   ];
 
@@ -81,7 +155,10 @@ function BlogPost() {
           <RevealOnScroll animation="fade">
             <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl">
               <img
-                src="https://www.dropbox.com/scl/fi/zduz7k6uqixnsh5x09hxt/lode.jpg?rlkey=v7ltsordg6pdtyt4aun4tuuda&raw=1"
+                src={isHypoparathyroidism 
+                  ? "https://www.dropbox.com/scl/fi/h193oou88hbxqy91urqj8/1-Venue-Mesto-odr-avaja.jpeg?rlkey=bv0ei06fseo0nwib1thy8bapi&raw=1"
+                  : "https://www.dropbox.com/scl/fi/zduz7k6uqixnsh5x09hxt/lode.jpg?rlkey=v7ltsordg6pdtyt4aun4tuuda&raw=1"
+                }
                 alt={t['article.title']}
                 className="w-full h-full object-cover"
               />
@@ -106,9 +183,11 @@ function BlogPost() {
                   {t['content.paragraph1']}
                 </p>
 
-                <p className="text-lg leading-relaxed mb-6">
-                  {t['content.paragraph2']}
-                </p>
+                {t['content.paragraph2'] && (
+                  <p className="text-lg leading-relaxed mb-6">
+                    {t['content.paragraph2']}
+                  </p>
+                )}
 
                 <div className="my-8 p-6 bg-primary/5 rounded-2xl border border-primary/10">
                   <h2 className="text-2xl font-bold mb-4 text-primary">{t['keyFocus.title']}</h2>
@@ -135,9 +214,21 @@ function BlogPost() {
 
           <RevealOnScroll animation="fade" delay={200}>
             <div className="mt-12 text-center">
-              <button className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-full hover:bg-primary-light transition-colors duration-200 shadow-lg hover:shadow-xl group">
-                <Share2 className="w-5 h-5 mr-2" />
-                {t['share.button']}
+              <button 
+                onClick={handleShare}
+                className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-full hover:bg-primary-light transition-colors duration-200 shadow-lg hover:shadow-xl group"
+              >
+                {shareSuccess ? (
+                  <>
+                    <Check className="w-5 h-5 mr-2" />
+                    {typeof navigator.share === 'function' ? 'Shared!' : 'Link Copied!'}
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="w-5 h-5 mr-2" />
+                    {t['share.button']}
+                  </>
+                )}
               </button>
             </div>
           </RevealOnScroll>
@@ -149,31 +240,25 @@ function BlogPost() {
                   {t['related.title']}
                 </span>
               </h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="backdrop-blur-md bg-white/10 rounded-2xl overflow-hidden border border-white/20 hover-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=800&q=80"
-                    alt={t['related.article1.title']}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{t['related.article1.title']}</h3>
-                    <p className="text-sm text-text-secondary mb-4">{t['related.article1.date']}</p>
-                    <Link to="#" className="text-primary hover:text-primary-light transition-colors duration-200">
-                      {t['related.readMore']}
-                    </Link>
+              <div className="flex justify-center max-w-4xl mx-auto">
+                <div className="backdrop-blur-md bg-white/10 rounded-2xl overflow-hidden border border-white/20 hover-card max-w-md w-full">
+                  <div className="flex justify-center">
+                    <img
+                      src={isHypoparathyroidism 
+                        ? "https://www.dropbox.com/scl/fi/zduz7k6uqixnsh5x09hxt/lode.jpg?rlkey=v7ltsordg6pdtyt4aun4tuuda&raw=1"
+                        : "https://www.dropbox.com/scl/fi/1vmomq16ftdggqs2wwfc5/image1.png?rlkey=gg2bnor495ttszg3wcid1oidc&raw=1"
+                      }
+                      alt={t['related.article.title']}
+                      className="w-full h-48 object-cover"
+                    />
                   </div>
-                </div>
-                <div className="backdrop-blur-md bg-white/10 rounded-2xl overflow-hidden border border-white/20 hover-card">
-                  <img
-                    src="https://images.unsplash.com/photo-1579165466741-7f35e4755660?auto=format&fit=crop&w=800&q=80"
-                    alt={t['related.article2.title']}
-                    className="w-full h-48 object-cover"
-                  />
                   <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{t['related.article2.title']}</h3>
-                    <p className="text-sm text-text-secondary mb-4">{t['related.article2.date']}</p>
-                    <Link to="#" className="text-primary hover:text-primary-light transition-colors duration-200">
+                    <h3 className="text-xl font-bold mb-2">{t['related.article.title']}</h3>
+                    <p className="text-sm text-text-secondary mb-4">{t['related.article.date']}</p>
+                    <Link 
+                      to={isHypoparathyroidism ? "/news/expert-meeting-neuroblastoma" : "/news/hypoparathyroidism-symposium"} 
+                      className="text-primary hover:text-primary-light transition-colors duration-200"
+                    >
                       {t['related.readMore']}
                     </Link>
                   </div>

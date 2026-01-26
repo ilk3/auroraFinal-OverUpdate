@@ -199,7 +199,7 @@ function App() {
                 {/* Main image container */}
                 <div className="relative aspect-square rounded-full overflow-hidden shadow-2xl">
                   <img
-                    src="https://raw.githubusercontent.com/ilk3/slike/refs/heads/main/registration.png"
+                    src="https://www.dropbox.com/scl/fi/6rvw2x8ypsm4kyq0mdmpe/registration.jpg?rlkey=fi71csummzklie0mwqgakkn6z&raw=1"
                     alt="Medical Registration Services"
                     className="w-full h-full object-cover"
                   />
@@ -255,7 +255,7 @@ function App() {
                 {/* Main image container */}
                 <div className="relative aspect-square rounded-full overflow-hidden shadow-2xl">
                   <img
-                    src="https://raw.githubusercontent.com/ilk3/slike/refs/heads/main/registration.png"
+                    src="https://www.dropbox.com/scl/fi/6rvw2x8ypsm4kyq0mdmpe/registration.jpg?rlkey=fi71csummzklie0mwqgakkn6z&raw=1"
                     alt="Medical Registration Services"
                     className="w-full h-full object-cover"
                   />
@@ -503,7 +503,7 @@ function App() {
             {/* Logo Column */}
             <div>
               <img
-                src="https://raw.githubusercontent.com/ilk3/slike/refs/heads/main/aurora-white.png"
+                src="https://www.dropbox.com/scl/fi/rngw5tjwo0s4g13zp5oa2/aurora-white.png?rlkey=kh5yom49ff57rkyeniqhmi1m8&raw=1"
                 alt="Aurora2222"
                 className="h-30 w-auto mb-6"
               />
